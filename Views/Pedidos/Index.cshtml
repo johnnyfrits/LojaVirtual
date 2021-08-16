@@ -1,0 +1,62 @@
+﻿@model IEnumerable<LojaVirtual.Models.Pedidos>
+
+@{
+    ViewData["Title"] = "Pedidos";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Novo Pedido</a>
+</p>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="number">
+                #
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th colspan="2">
+                @Html.DisplayNameFor(model => model.Cliente)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Cliente.Nome)
+                </th>*@
+            <th class="number">
+                Valor
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="number">
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </a>
+                </td>
+                <td>
+                    @item.Data.ToShortDateString()
+                </td>
+                <td class="number">
+                    @Html.DisplayFor(modelItem => item.Cliente.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                </td>
+                <td class="number">
+                    @item.Itens.Sum(o => o.Total).ToString("N2")
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-success">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class=" btn btn-outline-info">Detalhes</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

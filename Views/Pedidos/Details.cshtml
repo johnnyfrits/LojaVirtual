@@ -1,0 +1,95 @@
+﻿@model LojaVirtual.Models.Pedidos
+
+@{
+    ViewData["Title"] = "Detalhes do Pedido";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Pedido #@Model.Id</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Data):
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Data)
+        </dd>
+
+        <dt class="col-sm-2">
+            Cliente:
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Nome)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayName("Total:")
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Itens.Sum(i => i.Total).ToString("N2")
+        </dd>
+    </dl>
+
+    <hr />
+
+    <h4>Itens do Pedido</h4>
+
+    <p>
+        <a class="btn btn-primary" asp-controller="PedidosItens" asp-action="Create" asp-route-id="@Model.Id">Incluir Produto</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayName("Código")
+                </th>
+                <th>
+                    @Html.DisplayName("Descrição")
+                </th>
+                <th class="number">
+                    @Html.DisplayNameFor(model => model.Itens.FirstOrDefault().Quantidade)
+                </th>
+                <th class="number">
+                    @Html.DisplayNameFor(model => model.Itens.FirstOrDefault().Preco)
+                </th>
+                <th class="number">
+                    @Html.DisplayNameFor(model => model.Itens.FirstOrDefault().Total)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Itens)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Produto.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Produto.Descricao)
+                    </td>
+                    <td class="number">
+                        @item.Quantidade.ToString("N2")
+                    </td>
+                    <td class="number">
+                        @item.Preco.ToString("N2")
+                    </td>
+                    <td class="number">
+                        @item.Total.ToString("N2")
+                    </td>
+                    <td>
+                        <a asp-controller="PedidosItens" asp-action="Edit" asp-route-id="@item.Id" class=" btn btn-outline-success">Editar</a>
+                        <a asp-controller="PedidosItens" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</div>
